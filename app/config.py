@@ -1,19 +1,19 @@
-from pydantic_settings import BaseSettings
 from functools import lru_cache
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-class Settings(BaseSettings):
-    app_name: str = "Clothing Analysis API"
-    version: str = "1.0.0"
-    openai_api_key: str
-    openai_model: str = "gpt-4-vision-preview"
-    max_tokens: int = 1000
-    temperature: float = 0.7
-    
-    cors_origins: list[str] = ["*"]
-    
-    class Config:
-        env_file = ".env"
+class Settings:
+    def __init__(self):
+        self.app_name = "Clothing Analysis API"
+        self.version = "1.0.0"
+        self.openai_api_key = os.getenv("OPENAI_API_KEY", "")
+        self.openai_model = os.getenv("OPENAI_MODEL", "gpt-4-vision-preview")
+        self.max_tokens = int(os.getenv("MAX_TOKENS", "1000"))
+        self.temperature = float(os.getenv("TEMPERATURE", "0.7"))
+        self.cors_origins = ["*"]
 
 
 @lru_cache()

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import List, Optional, Dict
 from enum import Enum
 
@@ -22,26 +22,26 @@ class ClothingCategory(str, Enum):
 
 class ClothingAnalysis(BaseModel):
     category: ClothingCategory
-    colors: List[str] = Field(..., description="List of main colors detected")
-    primary_color: str = Field(..., description="The dominant color")
-    secondary_colors: List[str] = Field(default=[], description="Other colors present")
-    material: Optional[str] = Field(None, description="Detected material type")
-    pattern: Optional[str] = Field(None, description="Pattern type (solid, striped, etc.)")
-    style: Optional[str] = Field(None, description="Style description")
-    season: Season = Field(..., description="Recommended season(s)")
-    occasion: List[str] = Field(default=[], description="Suitable occasions")
-    care_instructions: Optional[str] = Field(None, description="Care recommendations")
-    brand: Optional[str] = Field(None, description="Brand if visible")
-    confidence_score: float = Field(..., ge=0, le=1, description="Analysis confidence")
+    colors: List[str]
+    primary_color: str
+    secondary_colors: List[str] = []
+    material: Optional[str] = None
+    pattern: Optional[str] = None
+    style: Optional[str] = None
+    season: Season
+    occasion: List[str] = []
+    care_instructions: Optional[str] = None
+    brand: Optional[str] = None
+    confidence_score: float
 
 
 class AnalyzeClothingRequest(BaseModel):
-    image_base64: str = Field(..., description="Base64 encoded image")
-    additional_info: Optional[Dict[str, str]] = Field(default={}, description="Additional context")
+    image_base64: str
+    additional_info: Optional[Dict[str, str]] = {}
 
 
 class AnalyzeClothingResponse(BaseModel):
     success: bool
     analysis: Optional[ClothingAnalysis] = None
     error: Optional[str] = None
-    processing_time: float = Field(..., description="Processing time in seconds")
+    processing_time: float
